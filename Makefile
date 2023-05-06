@@ -2,7 +2,7 @@ SRCS			= pipex.c pipex_tools.c pipex_tools_2.c pipex_tools_3.c main.c
 OBJS			= $(SRCS:.c=.o)
 CC				= cc
 RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -fsanitize=address
 NAME			= pipex
 
 all:			shifuuu $(NAME)

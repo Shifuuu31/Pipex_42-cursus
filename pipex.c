@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asaadane <asaadane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/06 21:16:25 by asaadane          #+#    #+#             */
+/*   Updated: 2023/05/06 21:16:26 by asaadane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	close_pipes(t_all *pipex)
@@ -53,6 +65,8 @@ char	*command(char **paths, char *cmd)
 
 void	child_one(t_all pipex, char **av, char **env)
 {
+	char *tmp;
+	tmp = av[2];
 	dup2(pipex.pipe[1], 1); 
 	close(pipex.pipe[0]);
 	dup2(pipex.infile, 0);
@@ -64,13 +78,13 @@ void	child_one(t_all pipex, char **av, char **env)
 		write(2, ERR_CMD, ft_strlen(ERR_CMD));
 		exit(1);
 	}
-	execve(pipex.cmd, pipex.cmd_args, env);
-	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
+	if(*pipex.cmd  != '/')
+		pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
     if (execve(pipex.cmd, pipex.cmd_args, env) == -1)
-    {
-    perror("command not found");
-    exit(1);
-    }
+   {
+	write(2, ERR_CMD, ft_strlen(ERR_CMD));
+   	exit(1);
+   }
 }
 
 void	child_two(t_all pipex, char **av, char **env)
@@ -86,11 +100,11 @@ void	child_two(t_all pipex, char **av, char **env)
         write(2, ERR_CMD, ft_strlen(ERR_CMD));
 		exit(1);
 	}
-	execve(pipex.cmd, pipex.cmd_args, env);
-	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
+	if(*pipex.cmd  != '/')
+		pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
     if (execve(pipex.cmd, pipex.cmd_args, env) == -1)
     {
-        perror("command not found");
+        write(2, ERR_CMD, ft_strlen(ERR_CMD));
         exit(1);
     }
 }

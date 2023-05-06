@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_tools.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asaadane <asaadane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/06 21:16:21 by asaadane          #+#    #+#             */
+/*   Updated: 2023/05/06 21:22:38 by asaadane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 char	*ft_strjoin(char *s1, char *s2)
@@ -27,30 +39,28 @@ char	*ft_strjoin(char *s1, char *s2)
 	str[j] = 0;
 	return (str);
 }
+void	free_parent(t_all *pipex)
+{
+	char	**paths;
 
-void free_parent(t_all *pipex) {
-    char **path;
-
-	path = pipex->paths;
-    close(pipex->infile);
-    close(pipex->outfile);
-    while (*path) 
+	close (pipex->infile);
+	close (pipex->outfile);
+	paths = pipex->paths;
+    while (*paths) 
 	{
-        free(*path++);
+        free (*paths++);
     }
-    free(pipex->paths);
+    free (pipex->paths);
 }
-
-
 void	free_child(t_all *pipex)
 {
 	char ** args;
+	
 	args = pipex->cmd_args;
 	while (*args)
 	{
-		free(args++);
+		free (args++);
 	}
-	free(pipex->cmd_args);
-	free(pipex->cmd);
+	free (pipex->cmd_args);
+	free (pipex->cmd);
 }
-

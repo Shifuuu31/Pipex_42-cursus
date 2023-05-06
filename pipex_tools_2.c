@@ -1,4 +1,16 @@
-# include "pipex.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_tools_2.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asaadane <asaadane@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/06 21:16:13 by asaadane          #+#    #+#             */
+/*   Updated: 2023/05/06 21:19:33 by asaadane         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipex.h"
 
 char	*ft_substr(char *s, size_t start, size_t len)
 {
@@ -99,4 +111,3 @@ char	**ft_split(const char *s, char c)
 		split[j] = NULL;
 	return (split);
 }
-
