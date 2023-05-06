@@ -7,7 +7,6 @@ int	main(int ac, char **av, char **env)
 	// for(int i = 0; i < ac; i++) {
     //   printf("av[%d]: %s\n", i, av[i]);
 //    }
-   return 0;
 
 	if (ac != 5)
 		return (write(2, ERR_INPUT, ft_strlen(ERR_INPUT)));

@@ -64,11 +64,11 @@ void	child_one(t_all pipex, char **av, char **env)
 		write(2, ERR_CMD, ft_strlen(ERR_CMD));
 		exit(1);
 	}
-	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
 	execve(pipex.cmd, pipex.cmd_args, env);
+	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
     if (execve(pipex.cmd, pipex.cmd_args, env) == -1)
     {
-    perror("execve failed");
+    perror("command not found");
     exit(1);
     }
 }
@@ -86,11 +86,11 @@ void	child_two(t_all pipex, char **av, char **env)
         write(2, ERR_CMD, ft_strlen(ERR_CMD));
 		exit(1);
 	}
-	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
 	execve(pipex.cmd, pipex.cmd_args, env);
+	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
     if (execve(pipex.cmd, pipex.cmd_args, env) == -1)
     {
-        perror("execve failed");
+        perror("command not found");
         exit(1);
     }
 }
