@@ -1,22 +1,41 @@
-SRCS			= pipex.c pipex_tools.c pipex_tools_2.c main.c
+SRCS			= pipex.c pipex_tools.c pipex_tools_2.c pipex_tools_3.c main.c
 OBJS			= $(SRCS:.c=.o)
 CC				= cc
 RM				= rm -f
 CFLAGS			= -Wall -Wextra -Werror
 NAME			= pipex
 
-all:			$(NAME)
+all:			shifuuu $(NAME)
+				@echo "\033[1m\033[32mCompilation has completed"
 
-$(NAME):		$(OBJS)
-				ar -rs $(NAME) $(OBJS)
-
-%.o : %.c pipex.h
-	$(CC) $(CFLAGS) -c $< -o $(NAME)
+$(NAME) : $(OBJS) pipex.h
+	@${CC} ${CFLAGS} ${OBJS} -o $(NAME)
 
 clean:
-				$(RM) $(OBJS) $(OUTPUT)
+				$(RM) $(OBJS) 
+				@echo "\033[1m\033[31mObject files removed"
 
-fclean:			clean
+fclean:			
+				$(RM) $(OBJS)
 				$(RM) $(NAME)
+				@echo "\033[1m\033[31mThe executable file and object files have been successfully removed"
 
 re:				fclean all
+
+shifuuu:
+			clear
+			@echo "	\033[37m░██████╗██╗░░██╗██╗███████╗██╗░░░██╗██╗░░░██╗██╗░░░██╗"
+			@echo "	\033[37m██╔════╝██║░░██║██║██╔════╝██║░░░██║██║░░░██║██║░░░██║"
+			@echo "	\033[37m╚█████╗░███████║██║█████╗░░██║░░░██║██║░░░██║██║░░░██║"
+			@echo "	\033[37m░╚═══██╗██╔══██║██║██╔══╝░░██║░░░██║██║░░░██║██║░░░██║"
+			@echo "	\033[37m██████╔╝██║░░██║██║██║░░░░░╚██████╔╝╚██████╔╝╚██████╔╝"
+			@echo "	\033[37m╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░░╚═════╝░░╚═════╝░░╚═════╝░"
+			@echo "	\033[37m														 "
+			@echo "	\033[37m███╗░░░███╗░█████╗░░██████╗████████╗███████╗██████╗░"
+			@echo "	\033[37m████╗░████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗"
+			@echo "	\033[37m██╔████╔██║███████║╚█████╗░░░░██║░░░█████╗░░██████╔╝"
+			@echo "	\033[37m██║╚██╔╝██║██╔══██║░╚═══██╗░░░██║░░░██╔══╝░░██╔══██╗"
+			@echo "	\033[37m██║░╚═╝░██║██║░░██║██████╔╝░░░██║░░░███████╗██║░░██║"
+			@echo "	\033[37m╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝"
+			@echo "															 "
+

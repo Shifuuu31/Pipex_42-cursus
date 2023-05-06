@@ -1,43 +1,96 @@
 #include "pipex.h"
 
-
-void	cmd_1(int *fd, t_cmd *t, char **envp)
+void	close_pipes(t_all *pipex)
 {
-	int		i;
-	char	*cmd;
-    int infile = open("infile", O_RDONLY);
-
-	i = 0;
-	if (dup2(infile, STDIN_FILENO) < 0)
-		return (perror("cmd_1"));
-	while (t->path[i])
-	{
-		cmd = ft_strjoin(t->path[i], t->cmd);
-		if (!cmd || !ft_strlen(cmd))
-			break;
-		if (execve(cmd, t->args, envp) != -1)
-		{
-			free(cmd);
-			exit(EXIT_SUCCESS);
-		}
-		free(cmd);
-        i++;
-	}
-	exit(EXIT_FAILURE);
+	close(pipex->pipe[0]);
+	close(pipex->pipe[1]);
 }
 
-void	pipex(int f1, int f2, char **ag, char **envp)
+char *find_path(t_all *pipex, char **env)
 {
-	t_cmd	cmd1;
-	t_cmd	cmd2;
+    int i;
+    int path_index;
 
-	init_cmd(&cmd1, f1);
-	init_cmd(&cmd2, f2);
-	if (!get_cmd(envp, &cmd1, ag[2]) || !get_cmd(envp, &cmd2, ag[3]))
-		return (free_all(&cmd1, &cmd2));
-	if (!check_cmd(&cmd1) || !check_cmd(&cmd2))
-		return (free_all(&cmd1, &cmd2));
-	exec_cmd(&cmd1, &cmd2, envp);
-	free_struct(&cmd1);
-	free_struct(&cmd2);
+	i = 0;
+	path_index = -1;
+    while (env[i] != NULL)
+	{
+        if (strncmp(env[i], "PATH=", 5) == 0)
+		{
+            path_index = i;
+            break;
+        }
+        i++;
+    }
+
+    if (path_index == -1) {
+        write(2, ERR_ENV, ft_strlen(ERR_ENV));
+        close_pipes(pipex);
+        close(pipex->infile);
+        close(pipex->outfile);
+        exit(1);
+    }
+    return env[path_index] + 5;
+}
+
+char	*command(char **paths, char *cmd)
+{
+	char	*path;
+	char	*tmp;
+
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(path, X_OK) == 0)
+			return (path);
+		free(path);
+		paths++;
+	}
+	return (NULL);
+}
+
+void	child_one(t_all pipex, char **av, char **env)
+{
+	dup2(pipex.pipe[1], 1); 
+	close(pipex.pipe[0]);
+	dup2(pipex.infile, 0);
+	pipex.cmd_args = ft_split(av[2], ' ');
+    pipex.cmd = av[2];
+	if (!pipex.cmd)
+	{
+		free_child(&pipex);
+		write(2, ERR_CMD, ft_strlen(ERR_CMD));
+		exit(1);
+	}
+	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
+	execve(pipex.cmd, pipex.cmd_args, env);
+    if (execve(pipex.cmd, pipex.cmd_args, env) == -1)
+    {
+    perror("execve failed");
+    exit(1);
+    }
+}
+
+void	child_two(t_all pipex, char **av, char **env)
+{
+	dup2(pipex.pipe[0], 0);
+	close(pipex.pipe[1]);
+	dup2(pipex.outfile, 1);
+	pipex.cmd_args = ft_split(av[3], ' ');
+    pipex.cmd = av[3];
+	if (!pipex.cmd)
+	{
+		free_child(&pipex);
+        write(2, ERR_CMD, ft_strlen(ERR_CMD));
+		exit(1);
+	}
+	pipex.cmd = command(pipex.paths, pipex.cmd_args[0]);
+	execve(pipex.cmd, pipex.cmd_args, env);
+    if (execve(pipex.cmd, pipex.cmd_args, env) == -1)
+    {
+        perror("execve failed");
+        exit(1);
+    }
 }

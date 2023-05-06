@@ -1,45 +1,4 @@
-#include "pipex.h"
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	size_t	i;
-
-	if (dst == src)
-		return (dst);
-	if (!dst && !src)
-		return (NULL);
-	i = 0;
-	while (i < n)
-	{
-		*(char *)(dst + i) = *(char *)(src + i);
-		i++;
-	}
-	return (dst);
-}
-
-size_t	ft_strlen( char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strdup( char *s)
-{
-	size_t	len;
-	char	*ptr;
-
-	len = ft_strlen(s) + 1;
-	ptr = malloc(sizeof(char) * len);
-	if (!ptr)
-		return (NULL);
-	ft_memcpy(ptr, s, len);
-	return (ptr);
-}
-
+# include "pipex.h"
 
 char	*ft_substr(char *s, size_t start, size_t len)
 {
@@ -123,40 +82,21 @@ char	**ft_split(const char *s, char c)
 	j = 0;
 	if (!s)
 		return (NULL);
-		wc = word_counter((char *)s, c);
-		split = (char **)malloc((wc + 1) * sizeof(char *));
+	wc = word_counter((char *)s, c);
+	split = (char **)malloc((wc + 1) * sizeof(char *));
 	if (!split)
 		return (NULL);
 	while (j < wc && s[i])
 	{
 		while (s[i] == c && s[i])
 				i++;
-			split[j] = ft_substr((char *)s, i, word_len((char *)s, c, i));
+		split[j] = ft_substr((char *)s, i, word_len((char *)s, c, i));
 		if (!split[j])
 			return (ft_free(j, split));
-			j++;
-			i = i + word_len((char *)s, c, i);
+		j++;
+		i = i + word_len((char *)s, c, i);
 	}
 		split[j] = NULL;
 	return (split);
 }
 
-int	ft_strncmp(const char *str1, const char *str2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	if (str1 == str2)
-		return (0);
-	while (i < n - 1 && str1 && str2 && str1[i] == str2[i])
-	{
-		i++;
-		if (!str1[i] || !str2[i])
-		{
-			return ((unsigned char)str1[i] - (unsigned char)str2[i]);
-		}
-	}
-	return ((unsigned char)str1[i] - (unsigned char)str2[i]);
-}
