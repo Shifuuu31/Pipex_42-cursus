@@ -6,7 +6,7 @@
 /*   By: asaadane <asaadane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 21:16:21 by asaadane          #+#    #+#             */
-/*   Updated: 2023/05/06 21:22:38 by asaadane         ###   ########.fr       */
+/*   Updated: 2023/05/07 11:02:16 by asaadane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,36 @@ char	*ft_strjoin(char *s1, char *s2)
 	str[j] = 0;
 	return (str);
 }
+
 void	free_parent(t_all *pipex)
 {
 	char	**paths;
 
-	close (pipex->infile);
-	close (pipex->outfile);
+	close(pipex->infile);
+	close(pipex->outfile);
 	paths = pipex->paths;
-    while (*paths) 
+	while (*paths)
 	{
-        free (*paths++);
-    }
-    free (pipex->paths);
+		free(*paths++);
+	}
+	free(pipex->paths);
 }
+
 void	free_child(t_all *pipex)
 {
-	char ** args;
-	
+	char	**args;
+
 	args = pipex->cmd_args;
 	while (*args)
 	{
-		free (args++);
+		free(args++);
 	}
-	free (pipex->cmd_args);
-	free (pipex->cmd);
+	free(pipex->cmd_args);
+	free(pipex->cmd);
+}
+
+void	display_msg(char *msg)
+{
+	perror(msg);
+	exit(1);
 }

@@ -6,27 +6,26 @@
 /*   By: asaadane <asaadane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 21:16:27 by asaadane          #+#    #+#             */
-/*   Updated: 2023/05/06 21:16:28 by asaadane         ###   ########.fr       */
+/*   Updated: 2023/05/07 10:59:12 by asaadane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
-#define PIPEX_H
+# define PIPEX_H
 
-#define ERR_ENV "Environment error\n"
-#define ERR_INPUT "Wrong number of arguments\n"
-#define ERR_CMD "Command not found\n"
-#define ERR_INFILE "Infile"
-#define ERR_OUTFILE "Outfile"
-#define ERR_PIPE "Pipe"
-
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <fcntl.h>
-#include <string.h>
-#include <sys/wait.h>
+# define ERR_ENV "environment error !!\n"
+# define ERR_INPUT "wrong number of arguments !!\n"
+# define ERR_CMD "command not found !!\n"
+# define ERR_INFILE "Infile error !!"
+# define ERR_OUTFILE "Outfile error !!"
+# define ERR_PIPE "Pipe error !!"
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <fcntl.h>
+# include <string.h>
+# include <sys/wait.h>
 
 typedef struct s_all
 {
@@ -42,12 +41,13 @@ typedef struct s_all
 }	t_all;
 
 void	*ft_memcpy(void *dst, const void *src, size_t n);
-void	child_one(t_all pipex, char **av, char **env);
-void	child_two(t_all pipex, char **av, char **env);
+void	parent(t_all pipex, char **av, char **env);
+void	child(t_all pipex, char **av, char **env);
 void	second_child(t_all pipex, char **av, char **env);
 void	close_pipes(t_all *pipex);
 void	free_child(t_all *pipex);
 void	free_parent(t_all *pipex);
+void	display_msg(char *msg);
 
 size_t	ft_strlen(char *s);
 
