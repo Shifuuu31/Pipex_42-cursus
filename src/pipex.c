@@ -12,57 +12,20 @@
 
 #include "pipex.h"
 
+/*
+** Closes both file descriptors of the kernel pipe buffer.
+*/
 void	close_pipes(t_all *pipex)
 {
 	close(pipex->pipe[0]);
 	close(pipex->pipe[1]);
 }
 
-char	*find_path(t_all *pipex, char **env)
-{
-	int	i;
-	int	path_index;
-
-	i = 0;
-	path_index = -1;
-	while (env[i] != NULL)
-	{
-		if (strncmp(env[i], "PATH=", 5) == 0)
-		{
-			path_index = i;
-			break ;
-		}
-		i++;
-	}
-	if (path_index == -1)
-	{
-		perror(ERR_ENV);
-		close_pipes(pipex);
-		close(pipex->infile);
-		close(pipex->outfile);
-		exit(1);
-	}
-	return (env[path_index] + 5);
-}
-
-char	*command(char **paths, char *cmd)
-{
-	char	*path;
-	char	*tmp;
-
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(path, X_OK) == 0)
-			return (path);
-		free(path);
-		paths++;
-	}
-	return (NULL);
-}
-
+/*
+** Child process worker (pid == 0):
+** Redirects standard output to pipe[1] and standard input to infile,
+** resolves cmd1 via PATH, and executes it via execve.
+*/
 void	parent(t_all pipex, char **av, char **env)
 {
 	dup2(pipex.pipe[1], 1);
@@ -85,6 +48,12 @@ void	parent(t_all pipex, char **av, char **env)
 	}
 }
 
+/*
+** Parent process worker (pid > 0):
+** Redirects standard input to pipe[0] and standard output to outfile,
+** closes pipe[1] to trigger EOF on pipe closure, resolves cmd2 via PATH,
+** and executes it via execve.
+*/
 void	child(t_all pipex, char **av, char **env)
 {
 	dup2(pipex.pipe[0], 0);

@@ -12,6 +12,10 @@
 
 #include "pipex.h"
 
+/*
+** Forks execution into child (running cmd1 via parent())
+** and parent (running cmd2 via child()).
+*/
 void	execute(t_all pipex, char **av, char **env)
 {
 	int	pid;
@@ -22,6 +26,10 @@ void	execute(t_all pipex, char **av, char **env)
 	child(pipex, av, env);
 }
 
+/*
+** Entry point: validates arguments, opens file descriptors,
+** creates the pipe, retrieves PATH, and launches execution.
+*/
 int	main(int ac, char **av, char **env)
 {
 	t_all	pipex;

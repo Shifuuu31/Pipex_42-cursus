@@ -31,13 +31,14 @@ The repository was submitted and passed peer evaluation with a perfect score of 
 
 | File | Lines | Primary Responsibility |
 | :--- | :--- | :--- |
-| `src/main.c` | 45 | CLI entry point, argument validation (`argc == 5`), file opening, pipe creation, PATH discovery, process dispatching (`execute()`). |
-| `src/pipex.c` | 108 | Pipeline execution logic: `find_path()`, `command()` resolution, `parent()` (executes `cmd1`), and `child()` (executes `cmd2`). |
-| `includes/pipex.h` | 63 | Header declarations, macro error strings, header inclusions (`<unistd.h>`, `<fcntl.h>`, `<sys/wait.h>`), and definition of `t_all` struct. |
-| `src/pipex_tools.c` | 74 | Memory deallocation routines (`free_parent`, `free_child`), string concatenation (`ft_strjoin`), and error exit helper (`display_msg`). |
-| `src/pipex_tools_2.c` | 113 | String tokenization utilities: `ft_split`, substring extraction (`ft_substr`), word counting, and split-cleanup helpers. |
-| `src/pipex_tools_3.c` | 73 | String primitives: `ft_strlen`, memory copy (`ft_memcpy`), string duplication (`ft_strdup`), and string comparison (`ft_strncmp`). |
-| `Makefile` | 41 | Compilation management with `-Wall -Wextra -Werror`, targets `all`, `$(NAME)`, `clean`, `fclean`, `re`, and banner rule `shifuuu`. |
+| `src/main.c` | 51 | CLI entry point, argument validation (`argc == 5`), file opening, pipe creation, process dispatching (`execute()`). |
+| `src/pipex.c` | 82 | Process worker functions: `close_pipes()`, `parent()` (executes `cmd1`), and `child()` (executes `cmd2`). |
+| `src/path.c` | 74 | Environment path discovery (`find_path()`) and binary resolution via `access()` (`command()`). |
+| `src/cleanup.c` | 68 | Memory deallocation routines (`free_parent`, `free_child`) and error exit helper (`display_msg`). |
+| `src/ft_split.c` | 134 | String tokenization engine: `ft_split()`, substring extraction (`ft_substr`), and static helper functions. |
+| `src/str_utils.c` | 114 | Core string primitives: `ft_strlen`, `ft_memcpy`, `ft_strdup`, `ft_strjoin`, and `ft_strncmp`. |
+| `includes/pipex.h` | 63 | Header declarations, macro error strings, system prototypes, and definition of `t_all` struct. |
+| `Makefile` | 41 | Compilation management with `-Wall -Wextra -Werror -Iincludes`, targets `all`, `$(NAME)`, `clean`, `fclean`, `re`, `shifuuu`. |
 | `en.subject.pdf` | 12 pp | Official 42 project specification document (Version 5.0). |
 | `pipex-100.png` | Image | Verification artifact demonstrating 100% grade on 42 Intra. |
 
@@ -52,24 +53,24 @@ The table below catalogs every function implemented or declared in the project:
 | `main` | `src/main.c` | Global | `int main(int ac, char **av, char **env)` | Validates argument count, opens files, creates pipe, splits PATH, triggers execution. |
 | `execute` | `src/main.c` | Global | `void execute(t_all pipex, char **av, char **env)` | Calls `fork()`. Dispatches `parent()` for child (`pid == 0`) and `child()` for parent (`pid > 0`). |
 | `close_pipes` | `src/pipex.c` | Global | `void close_pipes(t_all *pipex)` | Closes both `pipe[0]` and `pipe[1]` file descriptors. |
-| `find_path` | `src/pipex.c` | Global | `char *find_path(t_all *pipex, char **env)` | Scans `envp` for `PATH=`. Returns pointer past the prefix or exits on error. |
-| `command` | `src/pipex.c` | Global | `char *command(char **paths, char *cmd)` | Iterates over PATH directory candidates; verifies executability with `access(path, X_OK)`. Returns allocated string. |
+| `find_path` | `src/path.c` | Global | `char *find_path(t_all *pipex, char **env)` | Scans `envp` for `PATH=`. Returns pointer past the prefix or exits on error. |
+| `command` | `src/path.c` | Global | `char *command(char **paths, char *cmd)` | Iterates over PATH directory candidates; verifies executability with `access(path, X_OK)`. Returns allocated string. |
 | `parent` | `src/pipex.c` | Global | `void parent(t_all pipex, char **av, char **env)` | **Executes in Child (`pid == 0`)**: Redirects `infile` -> STDIN, `pipe[1]` -> STDOUT, closes `pipe[0]`, runs `execve(cmd1)`. |
 | `child` | `src/pipex.c` | Global | `void child(t_all pipex, char **av, char **env)` | **Executes in Parent (`pid > 0`)**: Redirects `pipe[0]` -> STDIN, `outfile` -> STDOUT, closes `pipe[1]`, runs `execve(cmd2)`. |
 | `second_child` | `includes/pipex.h` | Prototype | `void second_child(t_all pipex, char **av, char **env);` | **Unused Prototype**: Declared in header, but not implemented in any `.c` file. |
-| `ft_strjoin` | `src/pipex_tools.c` | Global | `char *ft_strjoin(char *s1, char *s2)` | Allocates and returns concatenation of `s1` and `s2`. |
-| `free_parent` | `src/pipex_tools.c` | Global | `void free_parent(t_all *pipex)` | Closes file descriptors and frees the split `paths` array. |
-| `free_child` | `src/pipex_tools.c` | Global | `void free_child(t_all *pipex)` | Frees `cmd_args` array and `cmd` string (contains pointer-increment bug). |
-| `display_msg` | `src/pipex_tools.c` | Global | `void display_msg(char *msg)` | Calls `perror(msg)` and immediately terminates with `exit(1)`. |
-| `ft_substr` | `src/pipex_tools_2.c`| Global | `char *ft_substr(char *s, size_t start, size_t len)` | Allocates substring from `s` starting at index `start`. |
-| `ft_free` | `src/pipex_tools_2.c`| Static | `static void *ft_free(int j, char **p)` | Helper that frees elements of 2D array on allocation failure. |
-| `word_len` | `src/pipex_tools_2.c`| Static | `static int word_len(char *str, char c, int i)` | Measures character count of next token delimited by `c`. |
-| `word_counter`| `src/pipex_tools_2.c`| Static | `static size_t word_counter(char const *str, char ch)` | Counts delimiter-separated tokens in `str`. |
-| `ft_split` | `src/pipex_tools_2.c`| Global | `char **ft_split(const char *s, char c)` | Splits string `s` by delimiter `c` into null-terminated array of strings. |
-| `ft_strlen` | `src/pipex_tools_3.c`| Global | `size_t ft_strlen(char *s)` | Calculates length of string `s`. |
-| `ft_memcpy` | `src/pipex_tools_3.c`| Global | `void *ft_memcpy(void *dst, const void *src, size_t n)` | Copies `n` bytes from `src` memory area to `dst`. |
-| `ft_strdup` | `src/pipex_tools_3.c`| Global | `char *ft_strdup(char *s)` | Allocates duplicate of string `s`. |
-| `ft_strncmp` | `src/pipex_tools_3.c`| Global | `int ft_strncmp(const char *str1, const char *str2, size_t n)` | Compares up to `n` characters of strings `str1` and `str2`. |
+| `ft_strjoin` | `src/str_utils.c` | Global | `char *ft_strjoin(char *s1, char *s2)` | Allocates and returns concatenation of `s1` and `s2`. |
+| `free_parent` | `src/cleanup.c` | Global | `void free_parent(t_all *pipex)` | Closes file descriptors and frees the split `paths` array. |
+| `free_child` | `src/cleanup.c` | Global | `void free_child(t_all *pipex)` | Frees `cmd_args` array and `cmd` string (contains pointer-increment bug). |
+| `display_msg` | `src/cleanup.c` | Global | `void display_msg(char *msg)` | Calls `perror(msg)` and immediately terminates with `exit(1)`. |
+| `ft_substr` | `src/ft_split.c` | Global | `char *ft_substr(char *s, size_t start, size_t len)` | Allocates substring from `s` starting at index `start`. |
+| `ft_free` | `src/ft_split.c` | Static | `static void *ft_free(int j, char **p)` | Helper that frees elements of 2D array on allocation failure. |
+| `word_len` | `src/ft_split.c` | Static | `static int word_len(char *str, char c, int i)` | Measures character count of next token delimited by `c`. |
+| `word_counter`| `src/ft_split.c` | Static | `static size_t word_counter(char const *str, char ch)` | Counts delimiter-separated tokens in `str`. |
+| `ft_split` | `src/ft_split.c` | Global | `char **ft_split(const char *s, char c)` | Splits string `s` by delimiter `c` into null-terminated array of strings. |
+| `ft_strlen` | `src/str_utils.c` | Global | `size_t ft_strlen(char *s)` | Calculates length of string `s`. |
+| `ft_memcpy` | `src/str_utils.c` | Global | `void *ft_memcpy(void *dst, const void *src, size_t n)` | Copies `n` bytes from `src` memory area to `dst`. |
+| `ft_strdup` | `src/str_utils.c` | Global | `char *ft_strdup(char *s)` | Allocates duplicate of string `s`. |
+| `ft_strncmp` | `src/str_utils.c` | Global | `int ft_strncmp(const char *str1, const char *str2, size_t n)` | Compares up to `n` characters of strings `str1` and `str2`. |
 
 ---
 

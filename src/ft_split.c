@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_tools_2.c                                    :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asaadane <asaadane@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,6 +12,10 @@
 
 #include "pipex.h"
 
+/*
+** Extracts and returns a newly allocated substring from string 's'
+** starting at index 'start' and of maximum length 'len'.
+*/
 char	*ft_substr(char *s, size_t start, size_t len)
 {
 	size_t	i;
@@ -40,6 +44,13 @@ char	*ft_substr(char *s, size_t start, size_t len)
 	return (str);
 }
 
+/* -------------------------------------------------------------------------- */
+/*                               Static Helpers                               */
+/* -------------------------------------------------------------------------- */
+
+/*
+** Helper: deallocates all split entries upon allocation failure.
+*/
 static void	*ft_free(int j, char **p)
 {
 	while (j > 0)
@@ -51,6 +62,9 @@ static void	*ft_free(int j, char **p)
 	return (NULL);
 }
 
+/*
+** Helper: measures length of next word delimited by character 'c'.
+*/
 static	int	word_len(char *str, char c, int i)
 {
 	int	j;
@@ -64,6 +78,9 @@ static	int	word_len(char *str, char c, int i)
 	return (j);
 }
 
+/*
+** Helper: counts total delimiter-separated words in string 'str'.
+*/
 static	size_t	word_counter(char const *str, char ch)
 {
 	size_t	i;
@@ -83,6 +100,14 @@ static	size_t	word_counter(char const *str, char ch)
 	return (counter);
 }
 
+/* -------------------------------------------------------------------------- */
+/*                               Public Engine                                */
+/* -------------------------------------------------------------------------- */
+
+/*
+** Splits string 's' using delimiter character 'c' into a null-terminated
+** array of newly allocated strings.
+*/
 char	**ft_split(const char *s, char c)
 {
 	int		i;

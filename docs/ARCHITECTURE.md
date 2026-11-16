@@ -27,10 +27,11 @@ Pipex_42-cursus/
 │   └── pipex.h            # Header definitions, struct s_all, prototypes
 └── src/
     ├── main.c             # Program entry point, argument validation, flow orchestration
-    ├── pipex.c            # Core pipeline: path resolution, fork branching, execve
-    ├── pipex_tools.c      # Memory deallocation, string concatenation, error reporting
-    ├── pipex_tools_2.c    # Tokenization engine (ft_split, ft_substr, word counting)
-    └── pipex_tools_3.c    # String and memory primitives (ft_strlen, ft_memcpy, ft_strdup)
+    ├── pipex.c            # Process redirection & child/parent workers
+    ├── path.c             # PATH environment lookup & command resolution
+    ├── cleanup.c          # Memory deallocation & error display
+    ├── ft_split.c         # String tokenization & substring extraction
+    └── str_utils.c        # String and memory primitives (ft_strlen, ft_memcpy, ft_strdup)
 ```
 
 ### Module Breakdown
@@ -38,10 +39,11 @@ Pipex_42-cursus/
 | Module | Core Functions | Technical Focus |
 | :--- | :--- | :--- |
 | **`src/main.c`** | `main()`, `execute()` | CLI input boundary check (`argc == 5`), file descriptor allocation (`open`), pipe creation (`pipe`), environment path extraction, process branching. |
-| **`src/pipex.c`** | `find_path()`, `command()`, `parent()`, `child()`, `close_pipes()` | Environment traversal for `PATH=`, binary discovery with `access(X_OK)`, file descriptor redirection with `dup2()`, process image replacement via `execve()`. |
-| **`src/pipex_tools.c`** | `ft_strjoin()`, `free_parent()`, `free_child()`, `display_msg()` | Heap string assembly for path concatenation, resource freeing, error message printing via `perror()`. |
-| **`src/pipex_tools_2.c`** | `ft_split()`, `ft_substr()` | Whitespace command-string parser converting CLI arguments (e.g. `"grep apple"`) into null-terminated `char **` vector for `execve`. |
-| **`src/pipex_tools_3.c`** | `ft_strlen()`, `ft_memcpy()`, `ft_strdup()`, `ft_strncmp()` | Standard C library replacements for string inspection and memory duplication without external library dependencies. |
+| **`src/pipex.c`** | `parent()`, `child()`, `close_pipes()` | Process redirection with `dup2()`, pipe closure, and program replacement via `execve()`. |
+| **`src/path.c`** | `find_path()`, `command()` | Environment traversal for `PATH=`, binary discovery with `access(X_OK)`, and candidate path construction. |
+| **`src/cleanup.c`** | `free_parent()`, `free_child()`, `display_msg()` | Resource freeing for path and command arrays, error message printing via `perror()`. |
+| **`src/ft_split.c`** | `ft_split()`, `ft_substr()`, static helpers | Whitespace command-string parser converting CLI arguments (e.g. `"grep apple"`) into null-terminated `char **` vector for `execve`. |
+| **`src/str_utils.c`** | `ft_strlen()`, `ft_memcpy()`, `ft_strdup()`, `ft_strjoin()`, `ft_strncmp()` | Standard C library replacements for string inspection and memory duplication without external library dependencies. |
 
 ---
 

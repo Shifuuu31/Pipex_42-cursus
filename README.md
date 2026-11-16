@@ -128,10 +128,11 @@ Pipex_42-cursus/
 │   └── pipex.h            # Header definitions, struct s_all, prototypes
 ├── src/
 │   ├── main.c             # Argument validation, file opening, pipeline dispatch
-│   ├── pipex.c            # PATH scanning, command lookup, fork handling, execve
-│   ├── pipex_tools.c      # Memory cleanup, string joining, display_msg
-│   ├── pipex_tools_2.c    # Custom string splitting (ft_split) & word extraction
-│   └── pipex_tools_3.c    # String primitives (ft_strlen, ft_strdup, ft_strncmp)
+│   ├── pipex.c            # Process redirection & child/parent workers
+│   ├── path.c             # PATH environment lookup & command resolution
+│   ├── cleanup.c          # Memory deallocation & error display
+│   ├── ft_split.c         # String tokenization & substring extraction
+│   └── str_utils.c        # Core string & memory utilities
 ├── assets/
 │   ├── banner.png         # Repository banner
 │   ├── diagrams/          # High-resolution architectural diagrams

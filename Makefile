@@ -1,4 +1,4 @@
-SRCS			= src/pipex.c src/pipex_tools.c src/pipex_tools_2.c src/pipex_tools_3.c src/main.c
+SRCS			= src/pipex.c src/path.c src/cleanup.c src/ft_split.c src/str_utils.c src/main.c
 OBJS			= $(SRCS:.c=.o)
 INCS			= includes/pipex.h
 CC				= cc
