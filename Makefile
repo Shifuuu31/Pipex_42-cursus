@@ -1,14 +1,15 @@
-SRCS			= pipex.c pipex_tools.c pipex_tools_2.c pipex_tools_3.c main.c
+SRCS			= src/pipex.c src/pipex_tools.c src/pipex_tools_2.c src/pipex_tools_3.c src/main.c
 OBJS			= $(SRCS:.c=.o)
+INCS			= includes/pipex.h
 CC				= cc
 RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror 
+CFLAGS			= -Wall -Wextra -Werror -Iincludes
 NAME			= pipex
 
 all:			shifuuu $(NAME)
 				@echo "\033[1m\033[32mCompilation has completed"
 
-$(NAME) : $(OBJS) pipex.h
+$(NAME) : $(OBJS) $(INCS)
 	@${CC} ${CFLAGS} ${OBJS} -o $(NAME)
 
 clean:
@@ -38,4 +39,3 @@ shifuuu:
 			@echo "	\033[37m██║░╚═╝░██║██║░░██║██████╔╝░░░██║░░░███████╗██║░░██║"
 			@echo "	\033[37m╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚═╝"
 			@echo "															 "
-
