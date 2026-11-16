@@ -1,0 +1,8 @@
+# Compilation outputs
+*.o
+pipex
+
+# OS and editor artifacts
+.DS_Store
+*.swp
+*~
