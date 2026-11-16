@@ -2,7 +2,7 @@
 
 > **Document Type:** Technical Audit & Codebase Verification Report  
 > **Target Repository:** `Pipex_42-cursus`  
-> **Original Author:** Aymane Saadane (`asaadane@student.1337.ma` / `student.42.fr`)  
+> **Original Author:** Ayman Saadane ([@Shifuuu31](https://github.com/Shifuuu31) — 1337 Khouribga)  
 > **Evaluation Outcome:** 100% Mandatory Part Validated (Intra 42)  
 > **Audit Date:** November 2026  
 > **Auditor Constraint:** Non-destructive audit. Source code and behavior preserved verbatim.

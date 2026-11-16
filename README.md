@@ -8,12 +8,37 @@
 
 ![Pipex Banner](assets/banner.png)
 
-[![Language: C](https://img.shields.io/badge/Language-C-blue.svg)](#)
-[![Standard: C99 / POSIX](https://img.shields.io/badge/Standard-POSIX-orange.svg)](#)
-[![42 School: Common Core](https://img.shields.io/badge/42_Cursus-Pipex-black.svg)](#)
-[![Evaluation: 100/100](https://img.shields.io/badge/Score-100%2F100-success.svg)](pipex-100.png)
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-C-blue.svg" alt="Language: C">
+  <img src="https://img.shields.io/badge/School-1337%20(Khouribga)-black.svg" alt="1337 Khouribga">
+  <img src="https://img.shields.io/badge/Network-42-black.svg" alt="42 Network">
+  <img src="https://img.shields.io/badge/Project-Pipex-informational.svg" alt="Pipex Project">
+  <img src="https://img.shields.io/badge/Score-100%2F100-success.svg" alt="Score: 100/100">
+  <img src="https://img.shields.io/badge/Standard-POSIX-orange.svg" alt="Standard: POSIX">
+</p>
+
+<p align="center">
+  <a href="#validation-evidence">
+    <img src="pipex-100.png" alt="Pipex 100% 42 Evaluation Result" width="800">
+  </a>
+</p>
 
 </div>
+
+---
+
+## Project Information
+
+| Item | Details |
+|---|---|
+| **Program Name** | `pipex` (Executable CLI Binary) |
+| **Language** | C (C99 / POSIX.1-2008 Standard) |
+| **Compiler & Flags** | `cc` with `-Wall -Wextra -Werror -Iincludes` |
+| **School** | 1337 Coding School (Khouribga) — 42 Network |
+| **System Calls** | `pipe`, `fork`, `dup2`, `execve`, `open`, `close`, `access` |
+| **Evaluation Score** | [100% (42 Peer Defense Validated)](pipex-100.png) |
+| **Documentation Hub** | [`docs/`](docs/) (`ARCHITECTURE.md`, `PIPE_AND_PROCESSES.md`, `PROJECT_AUDIT.md`, `TESTING.md`) |
+| **Author** | Ayman Saadane ([@Shifuuu31](https://github.com/Shifuuu31)) |
 
 ---
 
@@ -29,6 +54,7 @@
 - [Examples & Shell Equivalence](#examples--shell-equivalence)
 - [Error Handling](#error-handling)
 - [Learning Outcomes](#learning-outcomes)
+- [Validation Evidence](#validation-evidence)
 - [Resources & References](#resources--references)
 - [Author & Acknowledgments](#author--acknowledgments)
 
@@ -250,6 +276,16 @@ Completing and validating Pipex demonstrates core systems programming capabiliti
 
 ---
 
+## Validation Evidence
+
+The mandatory part of Pipex was successfully evaluated and validated during 42 school peer defense with a score of **100/100**:
+
+<div align="center">
+  <img src="pipex-100.png" alt="Pipex 100% 42 Evaluation Result" width="800">
+</div>
+
+---
+
 ## Resources & References
 
 ### Systems Programming Documentation
@@ -267,6 +303,16 @@ Pursuant to 42 curriculum guidelines, AI assistance was utilized exclusively for
 
 ## Author & Acknowledgments
 
-- **Author:** Aymane Saadane ([@AymanSDN](https://github.com/AymanSDN))
-- **Campus:** 1337 Coding School (42 Network)
-- **Validation:** 100/100 (Mandatory Part)
+- **Author:** Ayman Saadane ([@Shifuuu31](https://github.com/Shifuuu31))
+- **School:** 1337 Coding School (Khouribga) — 42 Network
+- **Evaluation:** [100% (42 Peer Defense Validated)](pipex-100.png)
+
+---
+
+## License & Academic Context
+
+This project was developed by **Ayman Saadane** as part of the **1337 Coding School (Khouribga)** curriculum within the **42 Network**.
+
+- **Intellectual Property:** The source code implementation is the academic work of the author.
+- **Academic Integrity:** 1337 and 42 Network projects are governed by strict peer-evaluation and anti-plagiarism policies. Current 42 students are encouraged to use this repository as an architectural learning reference rather than copying code.
+- **Licensing Notice:** All rights reserved by the author. No unauthorized redistribution.
